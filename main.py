@@ -1,6 +1,8 @@
 import xml.etree.ElementTree as ET
 import configparser
 
+divisions = {}
+
 class Division:
     def __init__(self, name):
         self.name = name
@@ -15,7 +17,7 @@ class Division:
             self.teams.append(team2)
         
     def findTeamOfMember(self, memberName):
-        for each team in self.teams:
+        for team in self.teams:
             if team.hasMember(memberName):
                 return team
         return None
@@ -25,26 +27,30 @@ class Division:
         if team == None:
             return None
         member = team.findMember(memberName)
+        
+    def getResult(self):
+        results = []
+        results.append(self.name)
+        for res in matches:
+            results.append(res.getResult())
+        return results
                 
-    def setResult(self, memberName, result):
-        team = 
 
 class Match:
-    def __init__(self, team1, team2)
+    def __init__(self, team1, team2):
         self.team1 = team1
         self.team2 = team2
         
-    def getResult:
-        return team1.name + " " + team1.getScore() + " " + team2.name + " " + team2.getScore()
+    def getResult(self):
+        return self.team1.name + " " + self.team1.getScore() + " " + self.team2.name + " " + self.team2.getScore()
         
-    def setResult(self, name, result):
 
 class Team:
     def __init__(self, name):
         self.name = name
         self.members = []
         
-    def addMembers(self, teamList)
+    def addMembers(self, teamList):
         self.members = teamlist.split(',')
         for name in names:
             self.members[name] = Person(name)
@@ -62,36 +68,73 @@ class Team:
         if self.hasMember(name):
             self.members[name].setScore(score)
             
+    def getStatus(self, name):
+        if self.hasMember(name):
+            return self.members[name].status
+        else:
+            return None
+            
+    def getTimeBehind(self, timeBehind):
+        if self.hasMember(name):
+            return self.members[name].timeBehind
+        else:
+            return None
+            
     def getScore(self):
         score = 0
         for member in self.members:
             score = score + member.score
             return score
             
+    def getPlayers(self):
+        for member in self.members:
+            str = str + member.name + ","
+        return str
+            
 
 class Person:
     def __init__(self, name):
         self.name = name
         self.score = 0
+        self.status = "OK"
+        self.timeBehind = 0
     
-    def setScore(self, score)
-        self.score = 0
+    def setTime(self, timeBehind, status):
+        self.timeBehind = timeBehind
+        self.status = status
 
 
 def get_team(string, index):
     teams = string.split(',')
-    return teams[index]
+    return Team(teams[index])
     
+def normalise(string):
+    string.replace(" ", "_")
+    return string
 
-def read_teams:
+def read_teams():
     config = configparser.ConfigParser()
     config.read('teams.ini')
-    divisions = config.sections()
-    for div in divisions:
-        count = config[div]['MatchCount']
+    divnames = config.sections()
+    for div in divnames:
+        divisions[div] = Division(div)
+        count = int(config[div]['MatchCount'])
         for x in range(1, count):
-            match[x] = (get_team(config[div]["Match" + str(x)],0), get_team(config[div]["Match" + str(x)],1)
+            teamnames = config[div]["Match" + str(x)].split(",")
+            team1 = Team(teamnames[0])
+            team2 = Team(teamnames[1])
+            divisions[div].addMatch(team1, team2)
+            members1 = config[div][normalise(team1.name)]
+            team1.addMembers(config[div][normalise(team1.name)])
+            team2.addMembers(config[div][normalise(team2.name)])
             
+def print_teams():
+    for div in divisions:
+        print (div.name)
+        for match in div.matches:
+            print (match.team1.name + " v " + match.team2.name)
+            print (match.team1.name + ": " + team1.getPlayers())
+            print (match.team2.name + ": " + team2.getPlayers())            
 
 def process_person(DivNameText, PersonResult, ResultLookup):
     Person = PersonResult.find("Person")
@@ -131,7 +174,8 @@ def process_division(DivNameText, ClassResult):
         process_person(DivNameText, PersonResult, ResultLookup)
     
 
-
+read_teams()
+print_teams()
 # instead of ET.fromstring(xml)
 input_file = "ResultsIOF3.xml"
 with open (input_file, "r") as myfile:
