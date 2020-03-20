@@ -27,6 +27,7 @@ class Division:
         if team == None:
             return None
         member = team.findMember(memberName)
+        return member
         
     def getResult(self):
         results = []
@@ -48,10 +49,10 @@ class Match:
 class Team:
     def __init__(self, name):
         self.name = name
-        self.members = []
+        self.members = {}
         
     def addMembers(self, teamList):
-        self.members = teamlist.split(',')
+        names = teamList.split(',')
         for name in names:
             self.members[name] = Person(name)
             
@@ -87,8 +88,9 @@ class Team:
             return score
             
     def getPlayers(self):
-        for member in self.members:
-            str = str + member.name + ","
+        str =""
+        for name in self.members:
+            str = str + name + ","
         return str
             
 
@@ -103,13 +105,19 @@ class Person:
         self.timeBehind = timeBehind
         self.status = status
 
-
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+        
 def get_team(string, index):
     teams = string.split(',')
     return Team(teams[index])
     
 def normalise(string):
-    string.replace(" ", "_")
+    string = string.replace(" ", "_")
     return string
 
 def read_teams():
@@ -119,22 +127,23 @@ def read_teams():
     for div in divnames:
         divisions[div] = Division(div)
         count = int(config[div]['MatchCount'])
-        for x in range(1, count):
-            teamnames = config[div]["Match" + str(x)].split(",")
-            team1 = Team(teamnames[0])
-            team2 = Team(teamnames[1])
-            divisions[div].addMatch(team1, team2)
-            members1 = config[div][normalise(team1.name)]
-            team1.addMembers(config[div][normalise(team1.name)])
-            team2.addMembers(config[div][normalise(team2.name)])
+        if count != 0:
+            for x in range(0, count):
+                teamnames = config[div]["Match" + str(x+1)].split(",")
+                team1 = Team(teamnames[0])
+                team2 = Team(teamnames[1])
+                divisions[div].addMatch(team1, team2)
+                members1 = config[div][normalise(team1.name)]
+                team1.addMembers(config[div][normalise(team1.name)])
+                team2.addMembers(config[div][normalise(team2.name)])
             
 def print_teams():
-    for div in divisions:
-        print (div.name)
+    for name,div in divisions.items():
+        print (name)
         for match in div.matches:
             print (match.team1.name + " v " + match.team2.name)
-            print (match.team1.name + ": " + team1.getPlayers())
-            print (match.team2.name + ": " + team2.getPlayers())            
+            print (match.team1.name + ": " + match.team1.getPlayers())
+            print (match.team2.name + ": " + match.team2.getPlayers())            
 
 def process_person(DivNameText, PersonResult, ResultLookup):
     Person = PersonResult.find("Person")
@@ -166,17 +175,28 @@ def process_person(DivNameText, PersonResult, ResultLookup):
         
              
 def process_division(DivNameText, ClassResult):
-    print(DivNameText)
-
     ResultLookup = {}
     PersonResults = ClassResult.findall('PersonResult')
     for PersonResult in PersonResults:
         process_person(DivNameText, PersonResult, ResultLookup)
-    
 
+    for personName, res in ResultLookup.items():
+        if DivNameText in divisions.keys():
+            member = divisions[DivNameText].findMember(personName)
+            if member != None:
+                if not is_number(res):
+                    member.setTime(-1, res)
+                else:
+                    member.setTime(int(res), "OK")
+                print(personName + " - found result")
+        else:
+            print(DivNameText + " is not a configured division")
+
+# Read the team info from INI file
 read_teams()
 print_teams()
-# instead of ET.fromstring(xml)
+
+# Read the results from IOF3 XML
 input_file = "ResultsIOF3.xml"
 with open (input_file, "r") as myfile:
     data=myfile.readlines()
@@ -202,7 +222,8 @@ for ClassResult in ClassResults:
         if (Name.text.startswith("Division ")):
             process_division(Name.text, ClassResult)
             
-            
+ 
+
 
 
 
