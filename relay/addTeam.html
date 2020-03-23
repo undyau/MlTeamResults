@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<head>
+<title>Relay Team Picker</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<form action="teamBuilder.php" method="post" class="white-pink">
+
+    <h1>Relay Team Picker - Identification    </h1>
+        <div id="PublicHelp"><span>Enter the Eventor receipt number(s) for the two runners in your team.</span></div>
+		<div id="NOLHelp" class="hide"><span>Enter the selector email address and assigned password.</span></div>
+	<br/>
+	<fieldset>
+	<legend>Relay Type</legend> 	
+         <input type = "radio"
+                 name = "radType"
+                 id = "typePublic"
+                 value = "public"
+                 checked = "checked" 
+				 onclick="setReceipt(true)">Public relay</input>
+         
+          <input type = "radio"
+                 name = "radType"
+                 id = "typeNOL"
+                 value = "NOL"
+				 onclick="setReceipt(false)">
+           NOL relay</input>
+		  </fieldset>
+<fieldset id="PublicFrame"> 
+	<legend>Eventor Receipt(s)</legend> 
+    <label>
+        <span>Receipt #1 :</span>
+        <input id="receipt1" type="number" name="receipt1" placeholder="First Receipt Number" />
+    </label>
+    <label>
+        <span>Receipt #2 :</span>
+        <input id="receipt2" type="number" name="receipt2" placeholder="Second Receipt Number (if any)" />
+    </label>
+</fieldset>	
+<fieldset id="NOLFrame" class="hide"> 
+	<legend>NOL</legend> 
+    <label>
+        <span>Selector email :</span>
+        <input id="email" type="email" name="email" placeholder="Email address" />
+    </label>
+   
+    <label>
+        <span>Password :</span>
+        <input id="password" type="password" name="password" placeholder="Password" />
+    </label>
+</fieldset>  
+     <label>
+        <span>&nbsp;</span>
+        <input type="submit" class="button" value="Send" />
+    </label> 
+
+</form>
+
+<script>
+function setReceipt(showReceipt)
+{
+	if (showReceipt)
+		{
+		document.getElementById("NOLFrame").classList.add('hide');
+		document.getElementById("PublicFrame").classList.remove('hide');
+		document.getElementById("NOLHelp").classList.add('hide');
+		document.getElementById("PublicHelp").classList.remove('hide');		
+		}
+	else
+		{
+		document.getElementById("NOLFrame").classList.remove('hide');
+		document.getElementById("PublicFrame").classList.add('hide');
+		document.getElementById("NOLHelp").classList.remove('hide');
+		document.getElementById("PublicHelp").classList.add('hide');		
+		}
+}
+</script>
+</body>

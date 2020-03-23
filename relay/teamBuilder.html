@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!-- refer http://www.html5rocks.com/en/tutorials/dnd/basics/ -->
+<html lang="en" dir="ltr" itemscope itemtype="http://schema.org/Article">
+<title>Relay Team Selector</title>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="teamBuilder.css"> 
+</head>
+<body>
+<div class="white-pink">
+<h2>Big Foot Relay Team Selector</h2>
+<ul><li>You should be able to see all of paid-up runners available for your selection.</li> 
+<li>Drag runners between the pool of available runners and teams.</li>
+<li>Runners should be in running order.</li>
+<li>You can name teams by typing on the team name. </li>
+<li>Teams of two for the public relay, teams
+of 4 for the NOL (man, woman, woman, man).</li></ul>
+</div>
+<div id="columns">
+  <div class="column" draggable="false"><header contenteditable="true" >&lt;Type team here&gt;</header></div>
+  <div class="column" draggable="false"><header contenteditable="true">Team B</header>
+    <div class="runner male" draggable="true">Mark Freeman,1</div></div>
+  <div class="column" draggable="false"><header contenteditable="true">Team C</header></div>
+</div>
+<div id="available"><header>Available</header>
+<div class="runner male" draggable="true">Andy Simpson,6</div>
+<div class="runner male" draggable="true">Mark Shingler,21</div>
+<div class="runner male" draggable="true">Bart Vonhoff,23</div>
+<div class="runner female" draggable="true">Paula Shingler,24</div>
+<div class="runner female" draggable="true">Lyra Simpson,36</div>
+<div class="runner male" draggable="true">Mark Shingler,21</div>
+<div class="runner male" draggable="true">Bart Vonhoff,23</div>
+<div class="runner female" draggable="true">Paula Shingler,24</div>
+<div class="runner female" draggable="true">Lyra Simpson,36</div>
+</div>
+
+<script>
+var dragSrcEl = null;
+var NOL = true;
+var RUNNER_EL_OFFSET = 1;
+
+function handleDragStart(e) {
+  this.style.opacity = '0.4';  // this / e.target is the source node.
+  dragSrcEl = this;
+  e.dataTransfer.setData('Text', this.id); // required otherwise doesn't work
+}
+
+function handleDragOver(e) {
+  if (e.preventDefault) {
+    e.preventDefault(); // Necessary. Allows us to drop.
+  }
+
+  e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+  return false;
+}
+
+function handleDragEnter(e) {
+  // this / e.target is the current hover target.
+  if (canAddToTeam(this, dragSrcEl))
+	this.classList.add('over');
+}
+
+function handleDragLeave(e) {
+  this.classList.remove('over');  // this / e.target is previous target element.
+}
+
+function addToTeam(target, runnerEl)
+{
+	if (!NOL)
+		{
+		target.appendChild(runnerEl);
+		return;
+		}
+
+//For NOL, want to have man, woman, woman, man
+	var fCount = 0;
+	var mCount = 0;
+	var nodes = target.querySelectorAll('div.runner');
+	for (var i = 0; i < nodes.length; i++) {
+		if (nodes[i].classList.contains('female'))
+			fCount++;
+		else if (nodes[i].classList.contains('male'))
+			mCount++;
+		}
+	switch (mCount + fCount)
+		{
+		case 0: target.appendChild(runnerEl); break;
+		case 1: if (mCount == 1 ||
+					runnerEl.classList.contains('female'))
+					target.appendChild(runnerEl);
+				else 
+					target.insertBefore(runnerEl, target.childNodes[0+RUNNER_EL_OFFSET]);
+				break;
+		case 2: if (mCount == 1) 
+					target.appendChild(runnerEl);
+				else
+					if (mCount == 2)
+						target.insertBefore(runnerEl, target.childNodes[1+RUNNER_EL_OFFSET]);
+					else
+						target.insertBefore(runnerEl, target.childNodes[0+RUNNER_EL_OFFSET]);
+				break;
+		case 3: if (mCount == 2)
+					target.insertBefore(runnerEl, target.childNodes[2+RUNNER_EL_OFFSET]);
+				else
+					target.appendChild(runnerEl);	
+				break;
+		}
+}
+
+function canAddToTeam(target, runnerEl)
+{
+	if (!NOL)
+		{
+		return target.querySelectorAll('div.runner').length < 2;
+		}
+	else // NOL
+		{
+		var fCount = 0;
+		var mCount = 0;
+		var nodes = target.querySelectorAll('div.runner');
+		for (var i = 0; i < nodes.length; i++) {
+			if (nodes[i].classList.contains('female'))
+				fCount++;
+			else if (nodes[i].classList.contains('male'))
+				mCount++;
+		}
+		// Need man, woman, woman, man
+		if (runnerEl.classList.contains('female'))
+			return fCount < 2;
+		if (runnerEl.classList.contains('male'))
+			return mCount < 2;
+		
+		return false;
+		}
+}
+
+function handleDrop(e) {
+  // this / e.target is current target element.
+
+  if (e.stopPropagation) {
+    e.stopPropagation(); // stops the browser from redirecting.
+  }
+
+  if (dragSrcEl != this) {
+	// Handle runner to team
+	if (this.classList.contains('column') && 
+	    dragSrcEl.classList.contains('runner'))
+		{
+		if (canAddToTeam(this, dragSrcEl))
+			addToTeam(this, dragSrcEl);
+		}
+	else if (this.id == 'available' && dragSrcEl.classList.contains('runner'))
+		this.appendChild(dragSrcEl);
+		
+  }
+
+  return false;
+}
+
+function handleDragEnd(e) {
+  // this/e.target is the source node.
+  this.style.opacity = '1';
+  [].forEach.call(cols, function (col) {
+    col.classList.remove('over');
+  });
+  [].forEach.call(runners, function (col) {
+    col.classList.remove('over');
+  });
+  [].forEach.call(pool, function (col) {
+    col.classList.remove('over');	
+  });  
+}
+
+var cols = document.querySelectorAll('div.column');
+[].forEach.call(cols, function(col) {
+  col.addEventListener('dragenter', handleDragEnter, false);
+  col.addEventListener('dragover', handleDragOver, false);
+  col.addEventListener('dragleave', handleDragLeave, false);
+  col.addEventListener('drop', handleDrop, false);
+  col.addEventListener('dragend', handleDragEnd, false);
+ // col.addEventListener('dragstart', handleDragStart, false);
+});
+
+var runners = document.querySelectorAll('div.runner');
+[].forEach.call(runners, function(col) {
+  col.addEventListener('dragenter', handleDragEnter, false);
+  col.addEventListener('dragover', handleDragOver, false);
+  col.addEventListener('dragleave', handleDragLeave, false);
+  col.addEventListener('drop', handleDrop, false);
+  col.addEventListener('dragend', handleDragEnd, false);
+  col.addEventListener('dragstart', handleDragStart, false);  
+});
+
+var pool = document.querySelectorAll('#available');
+[].forEach.call(pool, function(col) {
+  col.addEventListener('dragenter', handleDragEnter, false);
+  col.addEventListener('dragover', handleDragOver, false);
+  col.addEventListener('dragleave', handleDragLeave, false);
+  col.addEventListener('drop', handleDrop, false);
+  col.addEventListener('dragend', handleDragEnd, false); 
+}
+);
+</script>
+
+</body>
+</html>

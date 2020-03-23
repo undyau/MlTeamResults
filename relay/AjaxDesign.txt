@@ -1,0 +1,15 @@
+class
+list of old teams
+new teams (name,runner#1..runner#n)
+
+processing
+start transaction
+delete from teamentry where team in old teams
+delete from teams where team in old teams
+add new teams
+add new team entries
+commit
+
+report success
+
+class=blah;oldTeams=a,b,c,d;teamCount=n;team1=name,runner1,runner2,runner3;team2=name,runner.....

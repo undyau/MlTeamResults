@@ -1,0 +1,107 @@
+26-01-15 02:30:36: Processing Sue Thomson
+26-01-15 02:30:36: select min(p.ordertime) as newtime from payment p, entry e where e.id = 15 and TIMESTAMPDIFF(SECOND, e.ordertime, p.ordertime) <= 5 and  TIMESTAMPDIFF(SECOND, e.ordertime, p.ordertime) >= 0
+26-01-15 02:32:39: Processing Sue Thomson
+26-01-15 02:32:39: select min(p.ordertime) as newtime from payment p, entry e where e.id = 15 and TIMESTAMPDIFF(SECOND, e.ordertime, p.ordertime) <= 5 and  TIMESTAMPDIFF(SECOND, e.ordertime, p.ordertime) >= 0
+26-01-15 02:32:39: 1 rows retrieved
+26-01-15 02:35:39: Processing Sue Thomson
+26-01-15 02:35:39: select min(p.ordertime) as newtime from payment p, entry e where e.id = 15 and TIMESTAMPDIFF(SECOND, e.ordertime, p.ordertime) <= 5 and  TIMESTAMPDIFF(SECOND, e.ordertime, p.ordertime) >= 0
+26-01-15 02:35:39: select min(p.ordertime) as newtime from payment p, entry e where e.id = 15 and TIMESTAMPDIFF(HOUR, e.ordertime, p.ordertime) <= 2 and  TIMESTAMPDIFF(HOUR, e.ordertime, p.ordertime) >= -2 and UPPER(LEFT(p.customer,11)) = 'SUE THOMSON'
+26-01-15 02:35:39: update entry set ordertime = '2015-01-19 19:48:06' where id = 15
+26-01-15 03:11:32: details is Under rated,1,6,13,8
+26-01-15 03:11:32: insert into team(class,name) values('NOL relay','Under rated')
+26-01-15 03:11:32: select id from team where class = 'NOL relay' and name = 'Under rated'
+26-01-15 03:11:32: insert into teammember (teamid, entryid, runningorder) values(40,1, 1)
+26-01-15 03:11:32: insert into teammember (teamid, entryid, runningorder) values(40,6, 2)
+26-01-15 03:11:32: insert into teammember (teamid, entryid, runningorder) values(40,13, 3)
+26-01-15 03:11:32: insert into teammember (teamid, entryid, runningorder) values(40,8, 4)
+26-01-15 03:11:32: details is Over rated,2,11,3,31
+26-01-15 03:11:32: insert into team(class,name) values('NOL relay','Over rated')
+26-01-15 03:11:32: select id from team where class = 'NOL relay' and name = 'Over rated'
+26-01-15 03:11:32: insert into teammember (teamid, entryid, runningorder) values(41,2, 1)
+26-01-15 03:11:32: insert into teammember (teamid, entryid, runningorder) values(41,11, 2)
+26-01-15 03:11:32: insert into teammember (teamid, entryid, runningorder) values(41,3, 3)
+26-01-15 03:11:32: insert into teammember (teamid, entryid, runningorder) values(41,31, 4)
+26-01-15 03:11:32: details is under the radar,32,14
+26-01-15 03:11:32: insert into team(class,name) values('NOL relay','under the radar')
+26-01-15 03:11:32: select id from team where class = 'NOL relay' and name = 'under the radar'
+26-01-15 03:11:32: insert into teammember (teamid, entryid, runningorder) values(42,32, 1)
+26-01-15 03:11:32: insert into teammember (teamid, entryid, runningorder) values(42,14, 2)
+26-01-15 03:11:32: commit work
+26-01-15 03:11:35: details is Under rated,1,6,13,8
+26-01-15 03:11:35: insert into team(class,name) values('NOL relay','Under rated')
+26-01-15 03:11:35: rollback work
+26-01-15 03:14:31: delete from teammember where teamid in (40,41,42)
+26-01-15 03:14:31: delete from team where id in (40,41,42)
+26-01-15 03:14:31: details is Under rated,1,6,13,8
+26-01-15 03:14:31: insert into team(class,name) values('NOL relay','Under rated')
+26-01-15 03:14:31: select id from team where class = 'NOL relay' and name = 'Under rated'
+26-01-15 03:14:31: insert into teammember (teamid, entryid, runningorder) values(44,1, 1)
+26-01-15 03:14:31: insert into teammember (teamid, entryid, runningorder) values(44,6, 2)
+26-01-15 03:14:31: insert into teammember (teamid, entryid, runningorder) values(44,13, 3)
+26-01-15 03:14:31: insert into teammember (teamid, entryid, runningorder) values(44,8, 4)
+26-01-15 03:14:31: details is Over rated,11,31
+26-01-15 03:14:31: insert into team(class,name) values('NOL relay','Over rated')
+26-01-15 03:14:31: select id from team where class = 'NOL relay' and name = 'Over rated'
+26-01-15 03:14:31: insert into teammember (teamid, entryid, runningorder) values(45,11, 1)
+26-01-15 03:14:31: insert into teammember (teamid, entryid, runningorder) values(45,31, 2)
+26-01-15 03:14:31: details is under the radar,32,3,14,2
+26-01-15 03:14:31: insert into team(class,name) values('NOL relay','under the radar')
+26-01-15 03:14:31: select id from team where class = 'NOL relay' and name = 'under the radar'
+26-01-15 03:14:31: insert into teammember (teamid, entryid, runningorder) values(46,32, 1)
+26-01-15 03:14:31: insert into teammember (teamid, entryid, runningorder) values(46,3, 2)
+26-01-15 03:14:31: insert into teammember (teamid, entryid, runningorder) values(46,14, 3)
+26-01-15 03:14:31: insert into teammember (teamid, entryid, runningorder) values(46,2, 4)
+26-01-15 03:14:31: commit work
+26-01-15 04:32:20: details is 1,10
+26-01-15 04:32:20: insert into team(class,name) values('Public relay','1')
+26-01-15 04:32:20: select id from team where class = 'Public relay' and name = '1'
+26-01-15 04:32:20: insert into teammember (teamid, entryid, runningorder) values(47,10, 1)
+26-01-15 04:32:20: details is 2,9,12
+26-01-15 04:32:20: insert into team(class,name) values('Public relay','2')
+26-01-15 04:32:20: select id from team where class = 'Public relay' and name = '2'
+26-01-15 04:32:20: insert into teammember (teamid, entryid, runningorder) values(48,9, 1)
+26-01-15 04:32:20: insert into teammember (teamid, entryid, runningorder) values(48,12, 2)
+26-01-15 04:32:20: details is 3,7,15
+26-01-15 04:32:20: insert into team(class,name) values('Public relay','3')
+26-01-15 04:32:20: select id from team where class = 'Public relay' and name = '3'
+26-01-15 04:32:20: insert into teammember (teamid, entryid, runningorder) values(49,7, 1)
+26-01-15 04:32:20: insert into teammember (teamid, entryid, runningorder) values(49,15, 2)
+26-01-15 04:32:20: details is 4,4,5
+26-01-15 04:32:20: insert into team(class,name) values('Public relay','4')
+26-01-15 04:32:20: select id from team where class = 'Public relay' and name = '4'
+26-01-15 04:32:20: insert into teammember (teamid, entryid, runningorder) values(50,4, 1)
+26-01-15 04:32:20: insert into teammember (teamid, entryid, runningorder) values(50,5, 2)
+26-01-15 04:32:20: commit work
+26-01-15 04:32:23: details is 1,10
+26-01-15 04:32:23: insert into team(class,name) values('Public relay','1')
+26-01-15 04:32:23: rollback work
+26-01-15 04:32:31: details is 1,10,12
+26-01-15 04:32:31: insert into team(class,name) values('Public relay','1')
+26-01-15 04:32:31: rollback work
+26-01-15 04:33:19: delete from teammember where teamid in (47,48,49,50)
+26-01-15 04:33:19: delete from team where id in (47,48,49,50)
+26-01-15 04:33:19: details is 1,10,12
+26-01-15 04:33:19: insert into team(class,name) values('Public relay','1')
+26-01-15 04:33:19: select id from team where class = 'Public relay' and name = '1'
+26-01-15 04:33:19: insert into teammember (teamid, entryid, runningorder) values(53,10, 1)
+26-01-15 04:33:19: insert into teammember (teamid, entryid, runningorder) values(53,12, 2)
+26-01-15 04:33:19: details is 2,9
+26-01-15 04:33:19: insert into team(class,name) values('Public relay','2')
+26-01-15 04:33:19: select id from team where class = 'Public relay' and name = '2'
+26-01-15 04:33:19: insert into teammember (teamid, entryid, runningorder) values(54,9, 1)
+26-01-15 04:33:19: details is 3,7,15
+26-01-15 04:33:19: insert into team(class,name) values('Public relay','3')
+26-01-15 04:33:19: select id from team where class = 'Public relay' and name = '3'
+26-01-15 04:33:19: insert into teammember (teamid, entryid, runningorder) values(55,7, 1)
+26-01-15 04:33:19: insert into teammember (teamid, entryid, runningorder) values(55,15, 2)
+26-01-15 04:33:19: details is 4,4,5
+26-01-15 04:33:19: insert into team(class,name) values('Public relay','4')
+26-01-15 04:33:19: select id from team where class = 'Public relay' and name = '4'
+26-01-15 04:33:19: insert into teammember (teamid, entryid, runningorder) values(56,4, 1)
+26-01-15 04:33:19: insert into teammember (teamid, entryid, runningorder) values(56,5, 2)
+26-01-15 04:33:19: commit work
+26-01-15 04:33:25: delete from teammember where teamid in (47,48,49,50)
+26-01-15 04:33:25: delete from team where id in (47,48,49,50)
+26-01-15 04:33:25: details is 1,10,12
+26-01-15 04:33:25: insert into team(class,name) values('Public relay','1')
+26-01-15 04:33:25: rollback work
