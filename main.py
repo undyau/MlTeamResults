@@ -95,7 +95,10 @@ class Person:
     def textTime(self):
         mins = self.runningTime//60
         secs = self.runningTime - (60*mins)
-        return str(mins) + ":" + str(secs)
+        if secs >= 0 and secs <= 9:
+            return str(mins) + ":0" + str(secs)
+        else:
+            return str(mins) + ":" + str(secs)
         
     def getResult(self):
         if self.runningTime > 0:
@@ -200,7 +203,7 @@ def process_person(DivNameText, PersonResult, ResultLookup):
             return
         ResultLookup[Given.text + " " + Family.text] = (RunningTime.text, Status.text)
     else:
-        ResultLookup[Given.text + " " + Family.text] = ("-1","-1", Status.text)
+        ResultLookup[Given.text + " " + Family.text] = ("-1", Status.text)
         
              
 def process_division(DivNameText, ClassResult):
